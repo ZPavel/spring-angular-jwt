@@ -11,9 +11,9 @@ export class HomeComponent {
   greeting = {};
 
   constructor(private app: AppService, private http: HttpClient) {
-
   }
 
-  authenticated() { return this.app.authenticated; }
-
+  authenticated() {
+    return localStorage.getItem('token') != null;
+  }
 }

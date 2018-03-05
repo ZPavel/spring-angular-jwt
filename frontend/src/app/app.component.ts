@@ -11,13 +11,16 @@ import 'rxjs/add/operator/finally';
 })
 export class AppComponent {
   constructor(private app: AppService, private http: HttpClient, private router: Router) {
+  }
 
-    }
-    logout() {
-      this.http.post('logout', {}).finally(() => {
-          this.app.authenticated = false;
-          this.router.navigateByUrl('/login');
-      }).subscribe();
-    }
+  authenticated() {
+    return localStorage.getItem('token') != null;
+  }
 
+  logout() {
+    this.http.post('logout', {}).finally(() => {
+        localStorage.removeItem('token');
+        this.router.navigateByUrl('/home');
+    }).subscribe();
+  }
 }

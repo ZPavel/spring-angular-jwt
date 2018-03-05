@@ -27,7 +27,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <ul class=\"nav nav-pills\">\n    <li><a routerLinkActive=\"active\" routerLink=\"/home\">Home</a></li>\n    <li><a routerLinkActive=\"active\" routerLink=\"/register\">Register</a></li>\n    <li><a routerLinkActive=\"active\" routerLink=\"/login\">Login</a></li>\n    <li><a (click)=\"logout()\">Logout</a></li>\n  </ul>\n</div>\n<div class=\"container\">\n  <router-outlet></router-outlet>\n</div>\n"
+module.exports = "<div class=\"container\">\n  <ul class=\"nav nav-pills\">\n    <li><a routerLinkActive=\"active\" routerLink=\"/home\">Home</a></li>\n    <li><a routerLinkActive=\"active\" routerLink=\"/register\">Register</a></li>\n    <li *ngIf=\"!authenticated()\"><a routerLinkActive=\"active\" routerLink=\"/login\">Login</a></li>\n    <li *ngIf=\"authenticated()\"><a (click)=\"logout()\">Logout</a></li>\n  </ul>\n</div>\n<div class=\"container\">\n  <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
@@ -61,11 +61,14 @@ var AppComponent = /** @class */ (function () {
         this.http = http;
         this.router = router;
     }
+    AppComponent.prototype.authenticated = function () {
+        return localStorage.getItem('token') != null;
+    };
     AppComponent.prototype.logout = function () {
         var _this = this;
         this.http.post('logout', {}).finally(function () {
-            _this.app.authenticated = false;
-            _this.router.navigateByUrl('/login');
+            localStorage.removeItem('token');
+            _this.router.navigateByUrl('/home');
         }).subscribe();
     };
     AppComponent = __decorate([
@@ -191,17 +194,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var AppService = /** @class */ (function () {
     function AppService(http) {
         this.http = http;
-        this.authenticated = false;
     }
     AppService.prototype.login = function (credentials, callback) {
         this.http.post('login', credentials).subscribe(function (response) {
-            console.log(response);
+            if (response) {
+                localStorage.setItem('token', response['token']);
+            }
             return callback && callback();
         });
     };
     AppService.prototype.register = function (user, callback) {
         this.http.post('register', user).subscribe(function (response) {
-            console.log(response);
             return callback && callback();
         });
     };
@@ -219,7 +222,7 @@ var AppService = /** @class */ (function () {
 /***/ "./src/app/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Greeting</h1>\n<div [hidden]=\"!authenticated()\">\n  <p>The ID is {{greeting.id}}</p>\n  <p>The content is {{greeting.content}}</p>\n</div>\n<div [hidden]=\"authenticated()\">\n  <p>Login to see your greeting</p>\n</div>\n"
+module.exports = "<h1>Greeting</h1>\n<div *ngIf=\"!authenticated()\">\n  <p>The ID is {{greeting.id}}</p>\n  <p>The content is {{greeting.content}}</p>\n</div>\n<div *ngIf=\"authenticated()\">\n  <p>Login to see your greeting</p>\n</div>\n"
 
 /***/ }),
 
@@ -250,7 +253,9 @@ var HomeComponent = /** @class */ (function () {
         this.title = 'Viree';
         this.greeting = {};
     }
-    HomeComponent.prototype.authenticated = function () { return this.app.authenticated; };
+    HomeComponent.prototype.authenticated = function () {
+        return localStorage.getItem('token') != null;
+    };
     HomeComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             template: __webpack_require__("./src/app/home.component.html")
@@ -267,7 +272,7 @@ var HomeComponent = /** @class */ (function () {
 /***/ "./src/app/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"alert alert-danger\" [hidden]=\"!error\">\n  There was a problem logging in. Please try again.\n</div>\n<form role=\"form\" (submit)=\"login()\">\n  <div class=\"form-group\">\n    <label for=\"username\">Username:</label> <input type=\"text\"\n                                                   class=\"form-control\" id=\"username\" name=\"username\"\n                                                   [(ngModel)]=\"credentials.username\"/>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"password\">Password:</label> <input type=\"password\"\n                                                   class=\"form-control\" id=\"password\" name=\"password\"\n                                                   [(ngModel)]=\"credentials.password\"/>\n  </div>\n  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n</form>\n"
+module.exports = "<div class=\"alert alert-danger\" *ngIf=\"error\">\n  There was a problem logging in. Please try again.\n</div>\n<form role=\"form\" (submit)=\"login()\">\n  <div class=\"form-group\">\n    <label for=\"username\">Username:</label>\n    <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" [(ngModel)]=\"user.username\" required/>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"password\">Password:</label>\n    <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" [(ngModel)]=\"user.password\" required/>\n  </div>\n  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n</form>\n"
 
 /***/ }),
 
@@ -298,11 +303,11 @@ var LoginComponent = /** @class */ (function () {
         this.app = app;
         this.http = http;
         this.router = router;
-        this.credentials = { username: '', password: '' };
+        this.user = { username: '', password: '' };
     }
     LoginComponent.prototype.login = function () {
         var _this = this;
-        this.app.login(this.credentials, function () {
+        this.app.login(this.user, function () {
             _this.router.navigateByUrl('/');
         });
         return false;
@@ -330,7 +335,7 @@ module.exports = ""
 /***/ "./src/app/register.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"alert alert-danger\" [hidden]=\"!error\">\n  There was a problem logging in. Please try again.\n</div>\n<form role=\"form\" (submit)=\"register()\">\n  <div class=\"form-group\">\n    <label for=\"username\">Username:</label> <input type=\"text\"\n                                                   class=\"form-control\" id=\"username\" name=\"username\"\n                                                   [(ngModel)]=\"user.username\"/>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"password\">Password:</label> <input type=\"password\"\n                                                   class=\"form-control\" id=\"password\" name=\"password\"\n                                                   [(ngModel)]=\"user.password\"/>\n  </div>\n  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n</form>\n"
+module.exports = "<div class=\"alert alert-danger\" *ngIf=\"!error\">\n  There was a problem registering. Please try again.\n</div>\n<form role=\"form\" (submit)=\"register()\">\n  <div class=\"form-group\">\n    <label for=\"username\">Username:</label>\n    <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" [(ngModel)]=\"user.username\" required/>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"password\">Password:</label>\n    <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" [(ngModel)]=\"user.password\" required/>\n  </div>\n  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n</form>\n"
 
 /***/ }),
 

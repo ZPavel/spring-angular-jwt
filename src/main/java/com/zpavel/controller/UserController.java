@@ -2,6 +2,7 @@ package com.zpavel.controller;
 
 import com.zpavel.model.AppUser;
 import com.zpavel.request.AuthenticationRequest;
+import com.zpavel.response.AuthenticationResponse;
 import com.zpavel.service.JwtService;
 import com.zpavel.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,25 +31,27 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping(value = "/login")
-    public String login(@RequestBody AuthenticationRequest authenticationRequest) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authenticationRequest.username, authenticationRequest.password);
+    public AuthenticationResponse login(@RequestBody AuthenticationRequest authenticationRequest) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        String jwtToken = "";
+        AuthenticationResponse authenticationResponse = null;
 
         if (authentication != null && authentication.isAuthenticated()) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            jwtToken = jwtService.createToken(userDetails.getUsername());
+            authenticationResponse = new AuthenticationResponse();
+            authenticationResponse.setUsername(userDetails.getUsername());
+            authenticationResponse.setToken(jwtService.createToken(userDetails.getUsername()));
         }
 
-        return jwtToken;
+        return authenticationResponse;
     }
 
     @PostMapping(value = "/register")
     public void register(@RequestBody AuthenticationRequest authenticationRequest) {
         AppUser user = new AppUser();
-        user.setUsername(authenticationRequest.username);
-        user.setPassword(bCryptPasswordEncoder.encode(authenticationRequest.password));
+        user.setUsername(authenticationRequest.getUsername());
+        user.setPassword(bCryptPasswordEncoder.encode(authenticationRequest.getPassword()));
         userService.save(user);
     }
 
