@@ -18,9 +18,7 @@ export class AppComponent {
   }
 
   logout() {
-    this.http.post('logout', {}).finally(() => {
-        localStorage.removeItem('token');
-        this.router.navigateByUrl('/home');
-    }).subscribe();
+    localStorage.removeItem('token');
+    this.router.navigateByUrl('/');
   }
 }

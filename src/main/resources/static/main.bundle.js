@@ -27,7 +27,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <ul class=\"nav nav-pills\">\n    <li><a routerLinkActive=\"active\" routerLink=\"/home\">Home</a></li>\n    <li><a routerLinkActive=\"active\" routerLink=\"/register\">Register</a></li>\n    <li *ngIf=\"!authenticated()\"><a routerLinkActive=\"active\" routerLink=\"/login\">Login</a></li>\n    <li *ngIf=\"authenticated()\"><a (click)=\"logout()\">Logout</a></li>\n  </ul>\n</div>\n<div class=\"container\">\n  <router-outlet></router-outlet>\n</div>\n"
+module.exports = "<title>Viree</title>\n<div class=\"container\">\n  <ul class=\"nav nav-pills\">\n    <li><a routerLinkActive=\"active\" routerLink=\"home\">Home</a></li>\n    <li><a routerLinkActive=\"active\" routerLink=\"register\">Register</a></li>\n    <li *ngIf=\"!authenticated()\"><a routerLinkActive=\"active\" routerLink=\"login\">Login</a></li>\n    <li *ngIf=\"authenticated()\"><a routerLink=\"\" (click)=\"logout()\">Logout</a></li>\n  </ul>\n</div>\n<div class=\"container\">\n  <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
@@ -65,11 +65,8 @@ var AppComponent = /** @class */ (function () {
         return localStorage.getItem('token') != null;
     };
     AppComponent.prototype.logout = function () {
-        var _this = this;
-        this.http.post('logout', {}).finally(function () {
-            localStorage.removeItem('token');
-            _this.router.navigateByUrl('/home');
-        }).subscribe();
+        localStorage.removeItem('token');
+        this.router.navigateByUrl('/');
     };
     AppComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -99,9 +96,9 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_service__ = __webpack_require__("./src/app/app.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__("./src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__home_component__ = __webpack_require__("./src/app/home.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__login_component__ = __webpack_require__("./src/app/login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__register_component__ = __webpack_require__("./src/app/register.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__home_home_component__ = __webpack_require__("./src/app/home/home.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__login_login_component__ = __webpack_require__("./src/app/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__register_register_component__ = __webpack_require__("./src/app/register/register.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -141,9 +138,9 @@ var XhrInterceptor = /** @class */ (function () {
 
 var routes = [
     { path: '', pathMatch: 'full', redirectTo: 'home' },
-    { path: 'home', component: __WEBPACK_IMPORTED_MODULE_7__home_component__["a" /* HomeComponent */] },
-    { path: 'login', component: __WEBPACK_IMPORTED_MODULE_8__login_component__["a" /* LoginComponent */] },
-    { path: 'register', component: __WEBPACK_IMPORTED_MODULE_9__register_component__["a" /* RegisterComponent */] }
+    { path: 'home', component: __WEBPACK_IMPORTED_MODULE_7__home_home_component__["a" /* HomeComponent */] },
+    { path: 'login', component: __WEBPACK_IMPORTED_MODULE_8__login_login_component__["a" /* LoginComponent */] },
+    { path: 'register', component: __WEBPACK_IMPORTED_MODULE_9__register_register_component__["a" /* RegisterComponent */] }
 ];
 var AppModule = /** @class */ (function () {
     function AppModule() {
@@ -152,9 +149,9 @@ var AppModule = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* NgModule */])({
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */],
-                __WEBPACK_IMPORTED_MODULE_7__home_component__["a" /* HomeComponent */],
-                __WEBPACK_IMPORTED_MODULE_8__login_component__["a" /* LoginComponent */],
-                __WEBPACK_IMPORTED_MODULE_9__register_component__["a" /* RegisterComponent */]
+                __WEBPACK_IMPORTED_MODULE_7__home_home_component__["a" /* HomeComponent */],
+                __WEBPACK_IMPORTED_MODULE_8__login_login_component__["a" /* LoginComponent */],
+                __WEBPACK_IMPORTED_MODULE_9__register_register_component__["a" /* RegisterComponent */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* RouterModule */].forRoot(routes),
@@ -219,14 +216,14 @@ var AppService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/home.component.html":
+/***/ "./src/app/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Greeting</h1>\n<div *ngIf=\"!authenticated()\">\n  <p>The ID is {{greeting.id}}</p>\n  <p>The content is {{greeting.content}}</p>\n</div>\n<div *ngIf=\"authenticated()\">\n  <p>Login to see your greeting</p>\n</div>\n"
+module.exports = "<h1>Hello</h1>\n<div *ngIf=\"!authenticated()\">\n  <p>You are not logged in</p>\n</div>\n<div *ngIf=\"authenticated()\">\n  <p>You are logged in</p>\n</div>\n"
 
 /***/ }),
 
-/***/ "./src/app/home.component.ts":
+/***/ "./src/app/home/home.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -234,6 +231,7 @@ module.exports = "<h1>Greeting</h1>\n<div *ngIf=\"!authenticated()\">\n  <p>The 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_service__ = __webpack_require__("./src/app/app.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -246,21 +244,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var HomeComponent = /** @class */ (function () {
-    function HomeComponent(app, http) {
+    function HomeComponent(app, http, router) {
         this.app = app;
         this.http = http;
-        this.title = 'Viree';
-        this.greeting = {};
+        this.router = router;
     }
     HomeComponent.prototype.authenticated = function () {
         return localStorage.getItem('token') != null;
     };
     HomeComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            template: __webpack_require__("./src/app/home.component.html")
+            template: __webpack_require__("./src/app/home/home.component.html")
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["b" /* HttpClient */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["b" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]])
     ], HomeComponent);
     return HomeComponent;
 }());
@@ -269,14 +267,14 @@ var HomeComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/login.component.html":
+/***/ "./src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"alert alert-danger\" *ngIf=\"error\">\n  There was a problem logging in. Please try again.\n</div>\n<form role=\"form\" (submit)=\"login()\">\n  <div class=\"form-group\">\n    <label for=\"username\">Username:</label>\n    <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" [(ngModel)]=\"user.username\" required/>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"password\">Password:</label>\n    <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" [(ngModel)]=\"user.password\" required/>\n  </div>\n  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n</form>\n"
 
 /***/ }),
 
-/***/ "./src/app/login.component.ts":
+/***/ "./src/app/login/login.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -314,7 +312,7 @@ var LoginComponent = /** @class */ (function () {
     };
     LoginComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            template: __webpack_require__("./src/app/login.component.html")
+            template: __webpack_require__("./src/app/login/login.component.html")
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["b" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]])
     ], LoginComponent);
@@ -325,21 +323,21 @@ var LoginComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/register.component.css":
+/***/ "./src/app/register/register.component.css":
 /***/ (function(module, exports) {
 
 module.exports = ""
 
 /***/ }),
 
-/***/ "./src/app/register.component.html":
+/***/ "./src/app/register/register.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"alert alert-danger\" *ngIf=\"!error\">\n  There was a problem registering. Please try again.\n</div>\n<form role=\"form\" (submit)=\"register()\">\n  <div class=\"form-group\">\n    <label for=\"username\">Username:</label>\n    <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" [(ngModel)]=\"user.username\" required/>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"password\">Password:</label>\n    <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" [(ngModel)]=\"user.password\" required/>\n  </div>\n  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n</form>\n"
 
 /***/ }),
 
-/***/ "./src/app/register.component.ts":
+/***/ "./src/app/register/register.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -378,8 +376,8 @@ var RegisterComponent = /** @class */ (function () {
     RegisterComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-register',
-            template: __webpack_require__("./src/app/register.component.html"),
-            styles: [__webpack_require__("./src/app/register.component.css")]
+            template: __webpack_require__("./src/app/register/register.component.html"),
+            styles: [__webpack_require__("./src/app/register/register.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__app_service__["a" /* AppService */], __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["b" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]])
     ], RegisterComponent);
