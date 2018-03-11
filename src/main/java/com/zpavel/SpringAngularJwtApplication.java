@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class VireeApplication {
+public class SpringAngularJwtApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(VireeApplication.class, args);
+        SpringApplication.run(SpringAngularJwtApplication.class, args);
     }
 }

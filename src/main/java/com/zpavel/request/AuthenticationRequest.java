@@ -1,7 +1,11 @@
 package com.zpavel.request;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class AuthenticationRequest {
+    @NotEmpty
     private String username;
+    @NotEmpty
     private String password;
 
     public String getUsername() {

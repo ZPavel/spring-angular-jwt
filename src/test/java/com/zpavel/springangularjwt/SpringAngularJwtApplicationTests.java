@@ -1,4 +1,4 @@
-package com.zpavel.viree;
+package com.zpavel.springangularjwt;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class VireeApplicationTests {
+public class SpringAngularJwtApplicationTests {
 
 	@Test
 	public void contextLoads() {

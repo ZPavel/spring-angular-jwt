@@ -1,12 +1,12 @@
 package com.zpavel.security;
 
+import com.zpavel.service.AuthenticationService;
 import com.zpavel.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -16,11 +16,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@Component
 public class JwtFilter extends GenericFilterBean {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Override
     public void doFilter(final ServletRequest req,
@@ -32,7 +34,7 @@ public class JwtFilter extends GenericFilterBean {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             final String token = authHeader.substring(7); // The part after "Bearer "
             Jws<Claims> claims = jwtService.validateToken(token);
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(claims.getBody().getSubject(), null);
+            Authentication authentication = authenticationService.getAuthentication(claims);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

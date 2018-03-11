@@ -28,6 +28,7 @@ public class JwtServiceImpl implements JwtService {
 
         Claims claims = new DefaultClaims();
         claims.setSubject(username);
+        claims.put("roles", "user");
 
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, secret)

@@ -27,7 +27,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<title>Viree</title>\n<div class=\"container\">\n  <ul class=\"nav nav-pills\">\n    <li><a routerLinkActive=\"active\" routerLink=\"home\">Home</a></li>\n    <li><a routerLinkActive=\"active\" routerLink=\"register\">Register</a></li>\n    <li *ngIf=\"!authenticated()\"><a routerLinkActive=\"active\" routerLink=\"login\">Login</a></li>\n    <li *ngIf=\"authenticated()\"><a routerLink=\"\" (click)=\"logout()\">Logout</a></li>\n  </ul>\n</div>\n<div class=\"container\">\n  <router-outlet></router-outlet>\n</div>\n"
+module.exports = "<title>Spring-angular-jwt</title>\n<div class=\"container\">\n  <ul class=\"nav nav-pills\">\n    <li><a routerLinkActive=\"active\" routerLink=\"home\">Home</a></li>\n    <li><a routerLinkActive=\"active\" routerLink=\"register\">Register</a></li>\n    <li *ngIf=\"!authenticated()\"><a routerLinkActive=\"active\" routerLink=\"login\">Login</a></li>\n    <li *ngIf=\"authenticated()\"><a routerLink=\"\" (click)=\"logout()\">Logout</a></li>\n  </ul>\n</div>\n<div class=\"container\">\n  <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
@@ -333,7 +333,7 @@ module.exports = ""
 /***/ "./src/app/register/register.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"alert alert-danger\" *ngIf=\"!error\">\n  There was a problem registering. Please try again.\n</div>\n<form role=\"form\" (submit)=\"register()\">\n  <div class=\"form-group\">\n    <label for=\"username\">Username:</label>\n    <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" [(ngModel)]=\"user.username\" required/>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"password\">Password:</label>\n    <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" [(ngModel)]=\"user.password\" required/>\n  </div>\n  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n</form>\n"
+module.exports = "<div class=\"alert alert-danger\" *ngIf=\"error\">\n  There was a problem registering. Please try again.\n</div>\n<form role=\"form\" (submit)=\"register()\">\n  <div class=\"form-group\">\n    <label for=\"username\">Username:</label>\n    <input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" [(ngModel)]=\"user.username\" required/>\n  </div>\n  <div class=\"form-group\">\n    <label for=\"password\">Password:</label>\n    <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" [(ngModel)]=\"user.password\" required/>\n  </div>\n  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\n</form>\n"
 
 /***/ }),
 
