@@ -6,6 +6,9 @@ Simple example of authentication by Jwt with Spring security including register,
 Versions :
 
 Spring-boot : 1.5.10
+
 Angular CLI: 1.7.3
+
 Node: 8.9.4
+
 Angular: 5.2.8
